@@ -48,10 +48,12 @@ pipeline {
             }
         }
 
-        stage("Populate .env file") {
+        stage('Carregando o ENV de desenvolvimento') {
             steps {
-                dir("/var/lib/jenkins/workspace/envs/laravel-test") {
-                    fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: '.env', targetLocation: "${WORKSPACE}")])
+                configFileProvider([configFile(fileId: '71e14e4c-3c32-473d-8284-3334c22dbe7f', variable: 'env')]) {
+                    dir("/var/lib/jenkins/workspace/envs/laravel-test") {
+                      fileOperations([fileCopyOperation(excludes: '', flattenFiles: true, includes: '$env', targetLocation: "${WORKSPACE}")])
+                    }
                 }
             }
         }
