@@ -50,10 +50,8 @@ pipeline {
 
         stage('Carregando o ENV de desenvolvimento') {
             steps {
-                dir("/var/lib/jenkins/workspace/envs/laravel-test") {
-                    configFileProvider([configFile(fileId: '71e14e4c-3c32-473d-8284-3334c22dbe7f', variable: 'env')]) {
-                      sh 'cat $env > .env'
-                    }
+                configFileProvider([configFile(fileId: '71e14e4c-3c32-473d-8284-3334c22dbe7f', variable: 'env')]) {
+                  sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 cat $env > /var/lib/jenkins/workspace/envs/laravel-test/.env'
                 }
             }
         }
