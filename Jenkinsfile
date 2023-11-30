@@ -75,7 +75,7 @@ pipeline {
             }
 
             sshagent(credentials: ['laravel-jenkins']) {
-                sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 unzip -o /vagrant/artifact/artifact.zip -d /var/www/html'
+                sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 sudo unzip -o /vagrant/artifact/artifact.zip -d /var/www/html'
                 script {
                     try {
                         sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 sudo chmod 777 /var/www/html/storage -R'
