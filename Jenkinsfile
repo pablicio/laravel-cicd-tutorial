@@ -8,7 +8,7 @@ pipeline {
                 sh '''
                 docker info
                 docker version
-                docker-compose run version
+                docker-compose version
                 '''
             }
         }
@@ -38,13 +38,13 @@ pipeline {
         stage("Start Docker") {
             steps {
                 sh 'make up'
-                sh 'docker-compose run ps'
+                sh 'docker-compose ps'
             }
         }
 
         stage("Run Composer Install") {
             steps {
-                sh 'docker-compose run run --rm composer install'
+                sh 'docker-compose run --rm composer install'
             }
         }
 
@@ -58,19 +58,19 @@ pipeline {
 
         stage("Run Tests") {
             steps {
-                sh 'docker-compose run run --rm artisan test'
+                sh 'docker-compose run --rm artisan test'
             }
         }
     }
 
     post {
         success {
-            sh 'cd "/var/lib/jenkins/workspace/LaravelTest"'
+            sh 'cd "/var/lib/jenkins/workspace/laravel-jenkins"'
             sh 'rm -rf artifact.zip'
             sh 'zip -r artifact.zip . -x "*node_modules**"'
 
             withCredentials([sshUserPrivateKey(credentialsId: "laravel-jenkins", keyFileVariable: 'keyfile')]) {
-                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/LaravelTest/artifact.zip vagrant@192.168.33.10:/home/vagrant/artifact'
+                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/laravel-jenkins/artifact.zip vagrant@192.168.33.10:/home/vagrant/artifact'
             }
 
             sshagent(credentials: ['laravel-jenkins']) {
@@ -86,8 +86,8 @@ pipeline {
         }
 
         always {
-            sh 'docker-compose run down --remove-orphans -v'
-            sh 'docker-compose run ps'
+            sh 'docker-compose down --remove-orphans -v'
+            sh 'docker-compose ps'
         }
     }
 }
