@@ -71,7 +71,7 @@ pipeline {
             sh 'zip -r artifact.zip . -x "*node_modules**"'
 
             withCredentials([sshUserPrivateKey(credentialsId: "laravel-jenkins", keyFileVariable: 'keyfile')]) {
-                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/laravel-jenkins/artifact.zip vagrant@192.168.33.10:/vagrant/artifact'
+                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/laravel-jenkins/artifact.zip vagrant@192.168.33.10:/vagrant/artifact/'
             }
 
             sshagent(credentials: ['laravel-jenkins']) {
