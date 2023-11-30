@@ -14,16 +14,11 @@ pipeline {
         }
 
         stage("Verify SSH connection to server") {
-            // steps {
-            //     sshagent(credentials: ['laravel-jenkins']) {
-            //         sh '''
-            //         ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 whoami
-            //         '''
-            //     }
-            // }
             steps {
-                sshagent(['laravel-jenkins']) {
-                   sh 'ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 ls -la'
+                sshagent(credentials: ['laravel-jenkins']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no vagrant@192.168.33.10 whoami
+                    '''
                 }
             }
         }
