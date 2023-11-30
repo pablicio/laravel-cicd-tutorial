@@ -11,7 +11,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-        - USER=${USER:-youruser}
+        - USER=${USER:-vagrant}
     container_name: nginx
     ports:
       - 80:80
@@ -49,7 +49,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-        - USER=${USER:-youruser}
+        - USER=${USER:-vagrant}
     container_name: php
     volumes:
       - ./:/var/www/html:delegated
@@ -72,14 +72,14 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-        - USER=${USER:-youruser}
+        - USER=${USER:-vagrant}
     container_name: composer
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
     depends_on:
       - php
-    user: ${USER:-youruser}
+    user: ${USER:-vagrant}
     entrypoint: ['composer', '--ignore-platform-reqs']
     networks:
       - laravel
@@ -104,7 +104,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-        - USER=${USER:-youruser}
+        - USER=${USER:-vagrant}
     container_name: artisan
     volumes:
       - ./:/var/www/html:delegated
